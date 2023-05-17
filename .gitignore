@@ -182,3 +182,4 @@ fabric.properties
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,pycharm,visualstudiocode
+/db.sqlite3
