@@ -1,9 +1,10 @@
-FROM python:3.8-alpine
+FROM python:3.10-alpine
+RUN apk add python3-dev libpq-dev
 COPY requirements.txt /tmp
 RUN pip install -r /tmp/requirements.txt
 WORKDIR /code
-COPY static /code/static
-COPY app /code/app
-EXPOSE 8080
+COPY . .
+EXPOSE 8000
+RUN chmod +x docker-entrypoint.sh
 
-ENTRYPOINT [ "gunicorn", "-b", "0.0.0.0:8080", "--worker-class", "gthread", "--threads", "16", "app:create_app()" ]
+ENTRYPOINT ["./docker-entrypoint.sh"]

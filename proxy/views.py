@@ -1,44 +1,46 @@
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
-
-from proxy.models import Message
-from proxy.serializers import MessageSerializer
+from django.http import HttpResponse
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, ListAPIView
+from proxy.serializers import MessageSerializer, TopicSerializer
 
 
 def status(request):
     return HttpResponse("OK")
 
 
-@csrf_exempt
-def message_list(request):
+class MessageListCreateAPIView(ListCreateAPIView):
     """
-    List latest's messages, or create a new message.
+    API view to retrieve list of messages or create new
     """
-    if request.method == "GET":
-        messages = Message.objects.all().order_by("-dt_created")[:50]
-        serializer = MessageSerializer(messages, many=True)
-        return JsonResponse(serializer.data, safe=False)
 
-    elif request.method == "POST":
-        data = JSONParser().parse(request)
-        serializer = MessageSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+    serializer_class = MessageSerializer
+    queryset = MessageSerializer.get_queryset()
 
 
-@csrf_exempt
-def message_detail(request, pk):
+class MessageDetailAPIView(RetrieveAPIView):
     """
-    Retrieve a message.
+    API view to retrieve a specific message
     """
-    try:
-        message = Message.objects.get(pk=pk)
-    except Message.DoesNotExist:
-        return HttpResponse(status=404)
 
-    if request.method == "GET":
-        serializer = MessageSerializer(message)
-        return JsonResponse(serializer.data)
+    queryset = MessageSerializer.get_queryset()
+    serializer_class = MessageSerializer
+
+
+class TopicListCreateAPIView(ListCreateAPIView):
+    """
+    API view to retrieve list of Topics or create new
+    """
+
+    serializer_class = TopicSerializer
+    queryset = TopicSerializer.get_queryset()
+
+
+class TopicDetailAPIView(RetrieveAPIView):
+    """
+    API view to retrieve a specific Topic
+    """
+
+    queryset = TopicSerializer.get_queryset()
+    serializer_class = TopicSerializer
+
+
+
