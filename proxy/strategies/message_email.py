@@ -28,9 +28,5 @@ class EmailMessagingStrategy(MessagingStrategy):
 
     def send_message(self, message):
         logger.info(f"Sending email: {message}")
-
-        from_email = "notifications@landbot.io"
-        recipient_list = ["recipient1@example.com", "recipient2@example.com"]
-
-        send_mail(self.subject, message, from_email, recipient_list)
+        send_mail(self.subject, message, self.from_email, self.recipient_list)
         logger.info("Email sent!")

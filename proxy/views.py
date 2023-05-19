@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, ListAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 from proxy.serializers import MessageSerializer, TopicSerializer
 
 

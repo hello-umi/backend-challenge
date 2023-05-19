@@ -10,7 +10,7 @@ class Topic(models.Model):
     channel = models.CharField(max_length=200, choices=channel_choices)
 
     def get_channel(self):
-        return self.channel.get_strategy()
+        return CHANNEL_STRATEGY_REGISTRY.get(self.channel)
 
     @classmethod
     def get_available_channels(cls):
