@@ -54,6 +54,7 @@ Temporary Items
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
+.idea
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
@@ -182,3 +183,6 @@ fabric.properties
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,pycharm,visualstudiocode
+/db.sqlite3
+/notifications_proxy/settings/local_settings.py
+/notifications_proxy/db.sqlite3

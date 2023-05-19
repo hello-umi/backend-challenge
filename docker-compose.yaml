@@ -1,0 +1,68 @@
+version: "3"
+services:
+  notifications_proxy:
+    image: local/landbot
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres_db
+      - redis
+      - smtp
+    environment:
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_USER=postgres_user
+      - DB_PASS=postgres_pass
+      - DB_NAME=notifications_proxy
+      - POSTGRES_DB=postgres
+      - REDIS_URL=redis://redis:6379/0
+      - EMAIL_HOST=smtp
+      - EMAIL_PORT=1025
+      - DEFAULT_FROM_EMAIL=notifications@landbot.io
+      - EMAIL_SUBJECT="You have new notifications from a customer"
+      - EMAIL_RECIPIENT_LIST="recipient1@example.com,recipient2@example.com"
+
+    command: gunicorn -c gunicorn_config.py notifications_proxy.wsgi
+
+
+
+  notifications_worker:
+    image: local/landbot
+    depends_on:
+      - notifications_proxy
+      - redis
+    environment:
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_USER=postgres_user
+      - DB_PASS=postgres_pass
+      - DB_NAME=notifications_proxy
+      - POSTGRES_DB=postgres
+      - REDIS_URL=redis://redis:6379/0
+      - EMAIL_HOST=smtp
+      - EMAIL_PORT=1025
+      - DEFAULT_FROM_EMAIL=notifications@landbot.io
+      - EMAIL_SUBJECT=You have new notifications from a customer
+      - EMAIL_RECIPIENT_LIST=recipient1@example.com,recipient2@example.com
+
+    command: celery -A notifications_proxy worker --loglevel=info
+
+  postgres_db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_pass
+      - POSTGRES_DB=postgres
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  smtp:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
