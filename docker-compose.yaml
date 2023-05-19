@@ -22,7 +22,8 @@ services:
       - EMAIL_SUBJECT="You have new notifications from a customer"
       - EMAIL_RECIPIENT_LIST="recipient1@example.com,recipient2@example.com"
 
-    command: gunicorn notifications_proxy.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn -c gunicorn_config.py notifications_proxy.wsgi
+
 
 
   notifications_worker:
@@ -65,13 +66,3 @@ services:
     ports:
       - 1025:1025
       - 8025:8025
-
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin_password
-    ports:
-      - 8080:80
-    depends_on:
-      - postgres_db

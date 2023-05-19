@@ -3,7 +3,6 @@ import sys
 
 from .base_settings import *
 
-DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 connection_string = os.environ.get("DB_HOST", None)
@@ -29,7 +28,6 @@ else:
 
 STATIC_ROOT = "/static"
 
-# TODO improve this
 CELERY_BROKER_URL = "redis://host.docker.internal:6379/0"
 CELERY_RESULT_BACKEND = "redis://host.docker.internal:6379/0"
 
