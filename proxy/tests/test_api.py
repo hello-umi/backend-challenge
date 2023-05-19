@@ -1,11 +1,13 @@
 from unittest import mock
 
 from django.test import TestCase
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
 
 
 class MessageAPITestCase(TestCase):
+    """Basic HTTP REST methods tests for Messages"""
+
     def setUp(self):
         self.client = APIClient()
 
@@ -39,6 +41,8 @@ class MessageAPITestCase(TestCase):
 
 
 class TopicAPITestCase(TestCase):
+    """Basic HTTP REST methods tests for Topics"""
+
     def setUp(self):
         self.client = APIClient()
 
@@ -65,4 +69,3 @@ class TopicAPITestCase(TestCase):
         data = {"name": "Test name", "channel": "aaaaa"}
         response = self.client.post("/topics/", data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-

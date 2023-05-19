@@ -8,6 +8,8 @@ from proxy.models import Message
 
 
 class MessageEnqueueTestCase(TestCase):
+    """Test Case for creation of messages and ensure they are enqueued"""
+
     def setUp(self):
         self.client = APIClient()
 
@@ -19,9 +21,7 @@ class MessageEnqueueTestCase(TestCase):
         message_id = response.data.get("id")
         message = Message.objects.get(id=message_id)
         self.assertEqual(message.description, data["description"])
-        mocked_process_delay.assert_called_once_with(
-            message.id
-        )
+        mocked_process_delay.assert_called_once_with(message.id)
 
     @mock.patch("proxy.serializers.process_message.delay")
     def test_messages_are_not_created_and_not_enqueued(self, mocked_process_delay):

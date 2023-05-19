@@ -1,8 +1,7 @@
 from unittest import mock
 
-from model_bakery import baker
-
 from django.test import TestCase
+from model_bakery import baker
 
 from proxy.message_sender import MessageSender
 from proxy.models import Message, Topic
@@ -11,8 +10,12 @@ from proxy.strategies.message_slack import SlackMessagingStrategy
 
 
 class ProcessingMessagesTestCase(TestCase):
+    """
+    Test Case for processing messages
+    """
 
     def test_processing_messages_task_slack(self):
+        """Test processing a message with slack strategy"""
         topic = baker.make(Topic, channel="slack")
         message = baker.make(Message, status=1, topic=topic)
         sender = MessageSender(message.id)
@@ -52,4 +55,6 @@ class ProcessingMessagesTestCase(TestCase):
         sender.send_message()
         message.refresh_from_db()
         self.assertEqual(message.status, 4)
-        mocked_mail.assert_called_once_with("SOME_VALUE", message.format_body(), "SOME_VALUE", ["SOME_VALUE"])
+        mocked_mail.assert_called_once_with(
+            "SOME_VALUE", message.format_body(), "SOME_VALUE", ["SOME_VALUE"]
+        )

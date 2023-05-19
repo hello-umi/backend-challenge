@@ -6,7 +6,7 @@ from proxy.strategies.strategy_registry import CHANNEL_STRATEGY_REGISTRY
 class Topic(models.Model):
     name = models.CharField(max_length=200)
 
-    channel_choices = [(key, key.title())for key in CHANNEL_STRATEGY_REGISTRY.keys()]
+    channel_choices = [(key, key.title()) for key in CHANNEL_STRATEGY_REGISTRY.keys()]
     channel = models.CharField(max_length=200, choices=channel_choices)
 
     def get_channel(self):

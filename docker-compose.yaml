@@ -41,8 +41,8 @@ services:
       - EMAIL_HOST=smtp
       - EMAIL_PORT=1025
       - DEFAULT_FROM_EMAIL=notifications@landbot.io
-      - EMAIL_SUBJECT="You have new notifications from a customer"
-      - EMAIL_RECIPIENT_LIST="recipient1@example.com,recipient2@example.com"
+      - EMAIL_SUBJECT=You have new notifications from a customer
+      - EMAIL_RECIPIENT_LIST=recipient1@example.com,recipient2@example.com
 
     command: celery -A notifications_proxy worker --loglevel=info
 

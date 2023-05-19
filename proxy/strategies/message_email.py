@@ -10,6 +10,14 @@ logger = logging.getLogger(__name__)
 
 
 class EmailMessagingStrategy(MessagingStrategy):
+    """Email channel implementation. The following Environment Variables should be set:
+    EMAIL_SUBJECT
+    EMAIL_FROM_EMAIL or DEFAULT_FROM_EMAIL
+    EMAIL_RECIPIENT_LIST
+
+    otherwise the emails will fail.
+    """
+
     def __init__(self):
         self.subject = os.getenv("EMAIL_SUBJECT", None)
         from_email = os.getenv("EMAIL_FROM_EMAIL", None)

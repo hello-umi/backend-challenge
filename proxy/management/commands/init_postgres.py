@@ -27,20 +27,20 @@ class Command(BaseCommand):
             conn.autocommit = True
             cursor = conn.cursor()
             dbname = settings.DATABASES["default"]["NAME"]
-            cursor.execute("SELECT datname FROM pg_database WHERE datname = '{0}';".format(dbname))
+            cursor.execute(f"SELECT datname FROM pg_database WHERE datname = '{dbname}';")
             database_found = cursor.fetchall()
 
             if database_found:
-                logger.info("'{0}' database already exists".format(dbname))
+                logger.info(f"'{dbname}' database already exists")
             else:
-                logger.info("'{0}' database does not exist.".format(dbname))
+                logger.info(f"'{dbname}' database does not exist.")
                 logger.info("Preparing to create database........")
                 # Preparing query to create a database
-                sql = """CREATE database {0}""".format(dbname)
+                sql = f"""CREATE database {dbname}"""
 
                 # Creating a database
                 cursor.execute(sql)
-                logger.info("'{0}' database created successfully".format(dbname))
+                logger.info(f"'{dbname}' database created successfully")
 
             # Closing the connection
             conn.close()

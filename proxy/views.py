@@ -1,9 +1,11 @@
 from django.http import HttpResponse
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
+
 from proxy.serializers import MessageSerializer, TopicSerializer
 
 
 def status(request):
+    """API endpoint to check the service status"""
     return HttpResponse("OK")
 
 
@@ -41,6 +43,3 @@ class TopicDetailAPIView(RetrieveAPIView):
 
     queryset = TopicSerializer.get_queryset()
     serializer_class = TopicSerializer
-
-
-
